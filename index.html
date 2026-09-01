@@ -373,27 +373,8 @@ function cargar(){document.querySelectorAll('.resultado,.check').forEach(el=>{le
 function actualizarProgreso(){document.querySelectorAll('.page').forEach(pg=>{let checks=[...pg.querySelectorAll('.check')],done=checks.filter(x=>x.checked).length,pct=checks.length?done/checks.length*100:0;pg.querySelector('.bar').style.width=pct+'%';pg.querySelector('.progtext').textContent=`${done} / ${checks.length} completados (${Math.round(pct)}%)`})}
 function recopilar(){let out={alumno:$('#student').value,id:$('#studentId').value,exportado:new Date().toISOString(),paginas:[]};programa.forEach((p,pi)=>{let po={titulo:p.titulo,secciones:[]};p.secciones.forEach((s,si)=>{let so={titulo:s[0],ejercicios:[]};s[1].forEach((d,di)=>{let id=`${p.key}-${si}-${di}`,o=JSON.parse(localStorage.getItem(claveBase()+id)||'{}');so.ejercicios.push({ejercicio:d,resultado:o.resultado||'',completado:!!o.completado})});po.secciones.push(so)});out.paginas.push(po)});return out}
 function descargar(nombre,texto,tipo){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([texto],{type:tipo}));a.download=nombre;document.body.appendChild(a);a.click();a.remove()}
-async function guardarResultados(){
-  const datos = recopilar();
-
-  if (!datos.alumno.trim()) {
-    alert("Por favor escribe el nombre del alumno antes de guardar.");
-    return;
-  }
-
-  const url = "https://script.google.com/macros/s/AKfycbwFLnTcHCY8RvhHSlZiYYxxR_Z-5dMcImKcHkrrNTFGc-Mo3IWeCKvVHThOEbVd-1A/exec";
-
-  try {
-    await fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(datos)
-    });
-
-    alert("Resultados guardados correctamente.");
-  } catch (error) {
-    alert("No se pudieron enviar los resultados. Inténtalo nuevamente.");
-  }
+function guardarResultados(){
+  alert("Resultados guardados en este dispositivo.");
 }
 
 function exportJson(){
