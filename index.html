@@ -377,7 +377,7 @@ async function guardarResultados(){
   const datos = recopilar();
   if (!datos.alumno.trim()) { alert("Escribe el nombre del alumno antes de guardar."); return; }
   const url = "https://script.google.com/macros/s/AKfycbwFLnTcHCY8RvhHSlZiYYxxR_Z-5dMcImKcHkrrNTFGc-Mo3IWeCKvVHThOEbVd-1A/exec";
-  if (url.includes("PEGA_AQUI")) { alert("Los resultados están guardados en este dispositivo. Falta conectar la URL de Google Sheets."); return; }
+  if (url.includes("https://script.google.com/macros/s/AKfycbwFLnTcHCY8RvhHSlZiYYxxR_Z-5dMcImKcHkrrNTFGc-Mo3IWeCKvVHThOEbVd-1A/exec")) { alert("Los resultados están guardados en este dispositivo. Falta conectar la URL de Google Sheets."); return; }
   try {
     await fetch(url, { method: "POST", mode: "no-cors", headers: {"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify(datos) });
     alert("Resultados enviados al coach y guardados en este dispositivo.");
