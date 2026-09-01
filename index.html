@@ -373,7 +373,14 @@ function cargar(){document.querySelectorAll('.resultado,.check').forEach(el=>{le
 function actualizarProgreso(){document.querySelectorAll('.page').forEach(pg=>{let checks=[...pg.querySelectorAll('.check')],done=checks.filter(x=>x.checked).length,pct=checks.length?done/checks.length*100:0;pg.querySelector('.bar').style.width=pct+'%';pg.querySelector('.progtext').textContent=`${done} / ${checks.length} completados (${Math.round(pct)}%)`})}
 function recopilar(){let out={alumno:$('#student').value,id:$('#studentId').value,exportado:new Date().toISOString(),paginas:[]};programa.forEach((p,pi)=>{let po={titulo:p.titulo,secciones:[]};p.secciones.forEach((s,si)=>{let so={titulo:s[0],ejercicios:[]};s[1].forEach((d,di)=>{let id=`${p.key}-${si}-${di}`,o=JSON.parse(localStorage.getItem(claveBase()+id)||'{}');so.ejercicios.push({ejercicio:d,resultado:o.resultado||'',completado:!!o.completado})});po.secciones.push(so)});out.paginas.push(po)});return out}
 function descargar(nombre,texto,tipo){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([texto],{type:tipo}));a.download=nombre;document.body.appendChild(a);a.click();a.remove()}
-function exportJson(){let o=recopilar();descargar(`CHQ-${slug(o.alumno||'alumno')}-resultados.json`,JSON.stringify(o,null,2),'application/json')}
+function guardarResultados(){
+  alert("Resultados guardados en este dispositivo.");
+}
+
+function exportJson(){
+  let o=recopilar();
+  descargar(`CHQ-${slug(o.alumno||'alumno')}-resultados.json`,JSON.stringify(o,null,2),'application/json');
+}
 function exportTxt(){let o=recopilar(),t=`CHQ PROGRAMA DE PRÁCTICA DE GOLF DE 6 DÍAS\nAlumno: ${o.alumno}\nID: ${o.id}\nExportado: ${new Date().toLocaleString('es')}\n\n`;o.paginas.forEach(p=>{t+=`\n=== ${p.titulo.toUpperCase()} ===\n`;p.secciones.forEach(s=>{t+=`\n${s.titulo}\n`;s.ejercicios.forEach(d=>t+=`${d.completado?'[X]':'[ ]'} ${d.ejercicio} | Resultado: ${d.resultado}\n`)})});descargar(`CHQ-${slug(o.alumno||'alumno')}-resultados.txt`,t,'text/plain')}
 function resetStudent(){if(confirm("¿Borrar todos los resultados guardados de este alumno en este navegador?")){let pre=claveBase();Object.keys(localStorage).filter(k=>k.startsWith(pre)).forEach(k=>localStorage.removeItem(k));cargar()}}
 $('#student').value=localStorage.getItem('chq6:ultimoAlumno')||'';
